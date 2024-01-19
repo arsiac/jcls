@@ -18,8 +18,7 @@ fn init_logger(debug: bool) {
     }
 }
 
-#[tokio::main]
-async fn main() {
+fn main() {
     let arg = argument::Argument::parse();
     init_logger(arg.debug);
 
