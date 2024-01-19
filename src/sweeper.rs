@@ -1,6 +1,6 @@
-use std::{collections::VecDeque, fs};
 use std::io::Error;
 use std::path::Path;
+use std::{collections::VecDeque, fs};
 
 use log::{debug, info};
 
@@ -41,7 +41,7 @@ impl MavenSweeper {
     fn is_maven_module(path: &Path) -> bool {
         let pom = path.join("pom.xml");
         if !pom.exists() {
-            debug!("Not a Maven module: {}", path.to_str().unwrap());
+            debug!("Not a Maven module: {}", path.display());
             return false;
         }
 
@@ -52,12 +52,12 @@ impl MavenSweeper {
     fn clean_maven_module(path: &Path) -> Result<(), Error> {
         let target = path.join("target");
         if !target.exists() || target.is_file() {
-            debug!("Maven module is clean: {}", path.to_str().unwrap());
+            debug!("Maven module is clean: {}", path.display());
             return Ok(());
         }
 
         let target = target.as_path();
-        info!("Remove folder '{}'", target.to_str().unwrap());
+        info!("Remove folder '{}'", target.display());
         fs::remove_dir_all(target)
     }
 }
@@ -100,7 +100,7 @@ impl IdeaSweeper {}
 impl Sweeper for IdeaSweeper {
     fn clean(&self, path: &Path) -> Result<(), Error> {
         if path.is_file() {
-            debug!("Not a folder: {}", path.to_str().unwrap());
+            debug!("Not a folder: {}", path.display());
             return Ok(());
         }
 
@@ -116,7 +116,7 @@ impl Sweeper for IdeaSweeper {
                         let filename = entry.file_name();
                         let filename = filename.to_str().unwrap();
                         if filename.ends_with(".iml") {
-                            info!("Remove file '{}'", entry_path.to_str().unwrap());
+                            info!("Remove file '{}'", entry_path.display());
                             std::fs::remove_file(&entry_path)?;
                         }
                     }

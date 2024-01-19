@@ -2,7 +2,7 @@ use std::env;
 use std::path::Path;
 
 use clap::Parser;
-use log::{error, info};
+use log::{error, warn};
 
 use sweeper::{IdeaSweeper, MavenSweeper, SweeperChain};
 
@@ -30,9 +30,8 @@ fn main() {
         path
     };
 
-    info!("Clear Project: {}", path.display());
-
     if !arg.maven && !arg.idea {
+        warn!("Didn't do anything");
         return;
     }
 
